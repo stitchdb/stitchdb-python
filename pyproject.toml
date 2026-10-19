@@ -1,0 +1,61 @@
+[project]
+name = "stitchdb-py"
+version = "1.0.0"
+description = "Official Python client for StitchDB: database, auth, storage, realtime and Edge Functions."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES"]
+authors = [{ name = "StitchDB", email = "support@stitchdb.com" }]
+requires-python = ">=3.9"
+keywords = ["stitchdb", "postgres", "database", "auth", "realtime", "storage"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Database",
+  "Typing :: Typed",
+]
+dependencies = [
+  "httpx[http2] >=0.26,<0.29",
+  "pydantic >=2.11.7,<3",
+  "pyjwt[crypto] >=2.12.0",
+  "websockets >=11,<16",
+  "typing-extensions >=4.14.0",
+  "deprecation >=2.1.0",
+  "strenum >=0.4.15",
+  "yarl >=1.22.0",
+]
+
+[project.optional-dependencies]
+iceberg = ["pyiceberg>=0.10.0"]
+
+[project.urls]
+Homepage = "https://stitchdb.com"
+Documentation = "https://stitchdb.com/docs/sdk/python"
+Repository = "https://github.com/stitchdb/stitchdb-python"
+Issues = "https://github.com/stitchdb/stitchdb-python/issues"
+
+[dependency-groups]
+tests = [
+  "pytest >=8.4.1",
+  "pytest-asyncio >=1.0.0",
+  "pytest-mock >=3.14.0",
+  "pytest-depends >=1.0.1",
+  "respx >=0.20.2,<0.23.0",
+  "Faker >=37.4.0",
+  "pyotp >=2.9.0",
+  "aiohttp >=3.12.13",
+  "python-dotenv >=1.1.1",
+]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stitchdb"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/stitchdb", "README.md", "LICENSE", "THIRD_PARTY_NOTICES", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

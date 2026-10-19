@@ -1,0 +1,24 @@
+name: CI
+on:
+  push: { branches: [main] }
+  pull_request:
+  release: { types: [published] }
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy: { matrix: { python: ["3.9", "3.11", "3.12", "3.13"] } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with: { python-version: "${{ matrix.python }}" }
+      - run: uv sync --group tests
+      - run: uv run pytest $(cat tests/offline.txt) -q --import-mode=importlib
+  publish:
+    if: github.event_name == 'release'
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv build
+      - run: uv publish --token "${{ secrets.PYPI_TOKEN }}"

@@ -100,6 +100,7 @@ class SyncStorageClient(SyncStorageBucketAPI):
         return SyncBucketProxy(id, self._base_url, self._headers, self._client)
 
     def vectors(self) -> SyncStorageVectorsClient:
+        """Vector buckets. Not available on StitchDB: these calls return an error."""
         return SyncStorageVectorsClient(
             url=self._base_url.joinpath("vector"),
             headers=self._headers,
@@ -107,6 +108,7 @@ class SyncStorageClient(SyncStorageBucketAPI):
         )
 
     def analytics(self) -> SyncStorageAnalyticsClient:
+        """Analytics (Iceberg) buckets. Not available on StitchDB: these calls return an error."""
         request = SyncRequestBuilder(
             session=self.session,
             headers=self._headers,

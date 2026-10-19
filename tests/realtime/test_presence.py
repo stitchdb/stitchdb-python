@@ -12,8 +12,8 @@ from stitchdb.realtime.types import ChannelStates, Presence, RawPresenceState
 load_dotenv()
 
 URL = os.getenv("STITCHDB_URL") or "http://127.0.0.1:54321"
-PUBLISHABLE_KEY = (
-    os.getenv("STITCHDB_PUBLISHABLE_KEY")
+ANON_KEY = (
+    os.getenv("STITCHDB_ANON_KEY")
     or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdGl0Y2hkYi1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.30k-T-w6MlWAwrHo1aRk8_7MaPM-m08Yj65j8D3qnmo"
 )
 
@@ -21,7 +21,7 @@ PUBLISHABLE_KEY = (
 @pytest.fixture
 def socket() -> AsyncRealtimeClient:
     url = f"{URL}/realtime/v1"
-    return AsyncRealtimeClient(url, PUBLISHABLE_KEY)
+    return AsyncRealtimeClient(url, ANON_KEY)
 
 
 @pytest.mark.asyncio
@@ -218,7 +218,7 @@ async def test_presence_enabled_when_callbacks_attached() -> None:
     """Test that presence.enabled is set correctly based on callback attachment."""
     from unittest.mock import AsyncMock, Mock
 
-    socket = AsyncRealtimeClient(f"{URL}/realtime/v1", PUBLISHABLE_KEY)
+    socket = AsyncRealtimeClient(f"{URL}/realtime/v1", ANON_KEY)
     channel = socket.channel("test")
 
     # Mock the join_push to capture the payload
@@ -255,7 +255,7 @@ async def test_resubscribe_on_presence_callback_addition() -> None:
     import asyncio
     from unittest.mock import AsyncMock
 
-    socket = AsyncRealtimeClient(f"{URL}/realtime/v1", PUBLISHABLE_KEY)
+    socket = AsyncRealtimeClient(f"{URL}/realtime/v1", ANON_KEY)
     channel = socket.channel("test")
 
     # Mock the channel as joined

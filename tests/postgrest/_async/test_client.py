@@ -151,7 +151,7 @@ async def test_response_status_code_outside_ok(postgrest_client: AsyncPostgrestC
         assert exc_response["errors"][0].get("code") == 400
 
 
-# https://github.com/stitchdb/postgrest-py/issues/595
+# Regression test: an invalid response body that is still valid JSON.
 @pytest.mark.asyncio
 async def test_response_client_invalid_response_but_valid_json(
     postgrest_client: AsyncPostgrestClient,

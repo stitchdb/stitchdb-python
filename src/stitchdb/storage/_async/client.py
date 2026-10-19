@@ -100,6 +100,7 @@ class AsyncStorageClient(AsyncStorageBucketAPI):
         return AsyncBucketProxy(id, self._base_url, self._headers, self._client)
 
     def vectors(self) -> AsyncStorageVectorsClient:
+        """Vector buckets. Not available on StitchDB: these calls return an error."""
         return AsyncStorageVectorsClient(
             url=self._base_url.joinpath("vector"),
             headers=self._headers,
@@ -107,6 +108,7 @@ class AsyncStorageClient(AsyncStorageBucketAPI):
         )
 
     def analytics(self) -> AsyncStorageAnalyticsClient:
+        """Analytics (Iceberg) buckets. Not available on StitchDB: these calls return an error."""
         request = AsyncRequestBuilder(
             session=self.session,
             headers=self._headers,

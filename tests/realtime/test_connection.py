@@ -23,8 +23,8 @@ load_dotenv()
 
 
 URL = os.getenv("STITCHDB_URL") or "http://127.0.0.1:54321"
-PUBLISHABLE_KEY = (
-    os.getenv("STITCHDB_PUBLISHABLE_KEY")
+ANON_KEY = (
+    os.getenv("STITCHDB_ANON_KEY")
     or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdGl0Y2hkYi1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.30k-T-w6MlWAwrHo1aRk8_7MaPM-m08Yj65j8D3qnmo"
 )
 
@@ -32,7 +32,7 @@ PUBLISHABLE_KEY = (
 @pytest.fixture
 def socket() -> AsyncRealtimeClient:
     url = f"{URL}/realtime/v1"
-    key = PUBLISHABLE_KEY
+    key = ANON_KEY
     return AsyncRealtimeClient(url, key)
 
 
@@ -46,7 +46,7 @@ class SignupMessageResponse(BaseModel):
 
 async def access_token() -> str:
     url = f"{URL}/auth/v1/signup"
-    headers = {"apikey": PUBLISHABLE_KEY, "Content-Type": "application/json"}
+    headers = {"apikey": ANON_KEY, "Content-Type": "application/json"}
     data = {
         "email": os.getenv("STITCHDB_TEST_EMAIL")
         or f"test_{datetime.datetime.now().strftime('%Y%m%d%H%M%S.%f')}@example.com",
@@ -68,12 +68,12 @@ async def access_token() -> str:
 
 
 def test_init_client():
-    client = AsyncRealtimeClient(URL, PUBLISHABLE_KEY)
+    client = AsyncRealtimeClient(URL, ANON_KEY)
 
     assert client is not None
     assert client.url.startswith("ws://") or client.url.startswith("wss://")
     assert "/websocket" in client.url
-    assert client.url.split("apikey=")[1] == PUBLISHABLE_KEY
+    assert client.url.split("apikey=")[1] == ANON_KEY
     assert client.auto_reconnect is True
     assert client.params == {}
     assert client.hb_interval == DEFAULT_HEARTBEAT_INTERVAL
@@ -86,7 +86,7 @@ def test_init_client():
 async def test_connect_includes_connection_params() -> None:
     client = AsyncRealtimeClient(
         "https://project.stitchdb.com/realtime/v1",
-        "publishable-key",
+        "anon-key",
         params={"log_level": "info"},
     )
 
@@ -99,7 +99,7 @@ async def test_connect_includes_connection_params() -> None:
     assert connect.await_args is not None
     websocket_url = urlparse(connect.await_args.args[0])
     assert parse_qs(websocket_url.query) == {
-        "apikey": ["publishable-key"],
+        "apikey": ["anon-key"],
         "log_level": ["info"],
         "vsn": ["1.0.0"],
     }
@@ -342,7 +342,7 @@ class CreateTodoResponse(BaseModel):
 async def create_todo(access_token: str, todo: dict) -> str:
     url = f"{URL}/rest/v1/todos?select=id"
     headers = {
-        "apikey": PUBLISHABLE_KEY,
+        "apikey": ANON_KEY,
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
         "Accept": "application/vnd.pgrst.object+json",
@@ -364,7 +364,7 @@ async def create_todo(access_token: str, todo: dict) -> str:
 async def update_todo(access_token: str, id: str, todo: dict):
     url = f"{URL}/rest/v1/todos?id=eq.{id}"
     headers = {
-        "apikey": PUBLISHABLE_KEY,
+        "apikey": ANON_KEY,
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
     }
@@ -382,7 +382,7 @@ class CreateMsgResponse(BaseModel):
 async def create_message(access_token: str, message: dict) -> int:
     url = f"{URL}/rest/v1/messages?select=id"
     headers = {
-        "apikey": PUBLISHABLE_KEY,
+        "apikey": ANON_KEY,
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
         "Accept": "application/vnd.pgrst.object+json",
@@ -404,7 +404,7 @@ async def create_message(access_token: str, message: dict) -> int:
 async def delete_todo(access_token: str, id: str):
     url = f"{URL}/rest/v1/todos?id=eq.{id}"
     headers = {
-        "apikey": PUBLISHABLE_KEY,
+        "apikey": ANON_KEY,
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
     }

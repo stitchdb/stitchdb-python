@@ -51,7 +51,7 @@ def test_is_valid_str_arg(test_input: Any, expected: bool) -> None:
         ("https://example.com", True),
         ("http://localhost", True),
         ("http://127.0.0.1:8000", True),
-        ("https://api.stitchdb.comm", True),
+        ("https://abcdefghijklmnop.stitchdb.com", True),
         ("ftp://example.com", False),
         ("ws://example.com", False),
         ("not-a-url", False),

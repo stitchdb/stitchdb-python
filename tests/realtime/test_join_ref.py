@@ -7,8 +7,8 @@ import pytest
 from stitchdb.realtime import AsyncRealtimeChannel, AsyncRealtimeClient
 
 URL = os.getenv("STITCHDB_URL") or "http://127.0.0.1:54321"
-PUBLISHABLE_KEY = (
-    os.getenv("STITCHDB_PUBLISHABLE_KEY")
+ANON_KEY = (
+    os.getenv("STITCHDB_ANON_KEY")
     or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdGl0Y2hkYi1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.30k-T-w6MlWAwrHo1aRk8_7MaPM-m08Yj65j8D3qnmo"
 )
 
@@ -16,7 +16,7 @@ PUBLISHABLE_KEY = (
 @pytest.fixture
 def socket() -> AsyncRealtimeClient:
     url = f"{URL}/realtime/v1"
-    return AsyncRealtimeClient(url, PUBLISHABLE_KEY)
+    return AsyncRealtimeClient(url, ANON_KEY)
 
 
 def sent_messages(mock_ws: AsyncMock) -> list[dict]:

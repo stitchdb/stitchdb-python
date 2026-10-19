@@ -245,7 +245,6 @@ async def test_httpx_client_base_url_isolation() -> None:
     """Test that shared httpx_client doesn't cause base_url mutation between services.
     This test reproduces the issue where accessing PostgREST after Storage causes
     Storage requests to hit the wrong endpoint (404 errors).
-    See: https://github.com/stitchdb/stitchdb-py/issues/1244
     """
     url = os.environ["STITCHDB_TEST_URL"]
     key = os.environ["STITCHDB_TEST_KEY"]

@@ -13,12 +13,20 @@ jobs:
         with: { python-version: "${{ matrix.python }}" }
       - run: uv sync --group tests
       - run: uv run pytest $(cat tests/offline.txt) -q --import-mode=importlib
+  # Publishing a GitHub release uploads it to PyPI as `stitchdb`: with the PYPI_TOKEN secret if set,
+  # otherwise with PyPI trusted publishing (publisher: stitchdb/stitchdb-python, workflow ci.yml, environment pypi).
   publish:
     if: github.event_name == 'release'
     needs: test
     runs-on: ubuntu-latest
+    environment: pypi
+    permissions: { id-token: write, contents: read }
+    env: { PYPI_TOKEN: "${{ secrets.PYPI_TOKEN }}" }
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
       - run: uv build
-      - run: uv publish --token "${{ secrets.PYPI_TOKEN }}"
+      - if: env.PYPI_TOKEN != ''
+        run: uv publish --token "$PYPI_TOKEN"
+      - if: env.PYPI_TOKEN == ''
+        run: uv publish --trusted-publishing always

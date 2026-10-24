@@ -1,12 +1,12 @@
-# stitchdb-py
+# stitchdb
 
 The official Python client for [StitchDB](https://stitchdb.com): Postgres database, auth, storage, realtime and Edge Functions. Sync and async.
 
 ```bash
-pip install "git+https://github.com/stitchdb/stitchdb-python"
+pip install stitchdb
 ```
 
-The package is `stitchdb-py`; you import it as `stitchdb`. Python 3.9+.
+Python 3.9+. To install the latest code from this repository instead: `pip install "git+https://github.com/stitchdb/stitchdb-python"`.
 
 ```python
 import os

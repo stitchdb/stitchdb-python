@@ -1,6 +1,6 @@
 [project]
-name = "stitchdb-py"
-version = "1.0.0"
+name = "stitchdb"
+version = "2.0.0"
 description = "Official Python client for StitchDB: database, auth, storage, realtime and Edge Functions."
 readme = "README.md"
 license = "MIT"

@@ -228,7 +228,7 @@ class AsyncBucketActionsMixin:
         expires_in
             number of seconds until the signed URL expires.
         options
-            options to be passed for downloading the file (image transformations are not available on StitchDB yet).
+            options to be passed for downloading the file. `transform` (width, height, resize, quality, format) returns a resized image; see https://stitchdb.com/docs/storage/image-resizing.
         """
         json: dict[str, str | bool | TransformOptions] = {"expiresIn": str(expires_in)}
         download_query = {}
